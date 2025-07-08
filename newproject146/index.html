@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Secure Online Examination System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-spinner"></div>
+        <p>Loading Secure Examination System...</p>
+    </div>
+
+    <!-- Main Application Container -->
+    <div id="app" class="app-container">
+        <!-- Navigation Header -->
+        <header id="header" class="header hidden">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Secure Exam System</h1>
+                </div>
+                <div class="user-info">
+                    <span id="userName"></span>
+                    <span id="userRole"></span>
+                    <button id="logoutBtn" class="btn-secondary">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main id="mainContent" class="main-content">
+            <!-- Login Form -->
+            <div id="loginSection" class="auth-section">
+                <div class="auth-container">
+                    <div class="auth-header">
+                        <h2>Welcome Back</h2>
+                        <p>Sign in to your account</p>
+                    </div>
+                    <form id="loginForm" class="auth-form">
+                        <div class="form-group">
+                            <label for="loginEmail">Email Address</label>
+                            <input type="email" id="loginEmail" name="email" required>
+                            <span class="error-message" id="loginEmailError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" name="password" required>
+                            <span class="error-message" id="loginPasswordError"></span>
+                        </div>
+                        <button type="submit" class="btn-primary">Sign In</button>
+                    </form>
+                    <div class="auth-footer">
+                        <p>Don't have an account? <a href="#" id="showSignup">Sign up</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Signup Form -->
+            <div id="signupSection" class="auth-section hidden">
+                <div class="auth-container">
+                    <div class="auth-header">
+                        <h2>Create Account</h2>
+                        <p>Join the examination system</p>
+                    </div>
+                    <form id="signupForm" class="auth-form">
+                        <div class="form-group">
+                            <label for="signupName">Full Name</label>
+                            <input type="text" id="signupName" name="name" required>
+                            <span class="error-message" id="signupNameError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="signupEmail">Email Address</label>
+                            <input type="email" id="signupEmail" name="email" required>
+                            <span class="error-message" id="signupEmailError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="signupPassword">Password</label>
+                            <input type="password" id="signupPassword" name="password" required>
+                            <span class="error-message" id="signupPasswordError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="signupRole">Role</label>
+                            <select id="signupRole" name="role" required>
+                                <option value="">Select Role</option>
+                                <option value="student">Student</option>
+                                <option value="instructor">Instructor</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                            <span class="error-message" id="signupRoleError"></span>
+                        </div>
+                        <button type="submit" class="btn-primary">Create Account</button>
+                    </form>
+                    <div class="auth-footer">
+                        <p>Already have an account? <a href="#" id="showLogin">Sign in</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Dashboard -->
+            <div id="adminDashboard" class="dashboard hidden">
+                <div class="dashboard-header">
+                    <h2>Admin Dashboard</h2>
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <h3>Total Users</h3>
+                            <p id="totalUsers">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Total Exams</h3>
+                            <p id="totalExams">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Active Sessions</h3>
+                            <p id="activeSessions">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-content">
+                    <div class="tab-container">
+                        <div class="tab-buttons">
+                            <button class="tab-btn active" data-tab="users">User Management</button>
+                            <button class="tab-btn" data-tab="exams">Exam Management</button>
+                            <button class="tab-btn" data-tab="reports">Reports</button>
+                        </div>
+                        <div class="tab-content">
+                            <div id="usersTab" class="tab-panel active">
+                                <div class="panel-header">
+                                    <h3>User Management</h3>
+                                    <button class="btn-primary" id="addUserBtn">Add User</button>
+                                </div>
+                                <div class="table-container">
+                                    <table id="usersTable" class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Role</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="usersTableBody">
+                                            <!-- Users will be populated here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div id="examsTab" class="tab-panel">
+                                <div class="panel-header">
+                                    <h3>Exam Management</h3>
+                                    <button class="btn-primary" id="addExamBtn">Add Exam</button>
+                                </div>
+                                <div class="table-container">
+                                    <table id="examsTable" class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>Duration</th>
+                                                <th>Questions</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="examsTableBody">
+                                            <!-- Exams will be populated here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div id="reportsTab" class="tab-panel">
+                                <h3>System Reports</h3>
+                                <p>Reports and analytics will be displayed here.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instructor Dashboard -->
+            <div id="instructorDashboard" class="dashboard hidden">
+                <div class="dashboard-header">
+                    <h2>Instructor Dashboard</h2>
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <h3>My Exams</h3>
+                            <p id="myExams">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Active Exams</h3>
+                            <p id="activeExams">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Total Submissions</h3>
+                            <p id="totalSubmissions">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-content">
+                    <div class="tab-container">
+                        <div class="tab-buttons">
+                            <button class="tab-btn active" data-tab="createExam">Create Exam</button>
+                            <button class="tab-btn" data-tab="manageExams">Manage Exams</button>
+                            <button class="tab-btn" data-tab="results">View Results</button>
+                        </div>
+                        <div class="tab-content">
+                            <div id="createExamTab" class="tab-panel active">
+                                <div class="exam-creator">
+                                    <h3>Create New Exam</h3>
+                                    <form id="examForm" class="exam-form">
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="examTitle">Exam Title</label>
+                                                <input type="text" id="examTitle" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="examDuration">Duration (minutes)</label>
+                                                <input type="number" id="examDuration" min="1" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="examDescription">Description</label>
+                                            <textarea id="examDescription" rows="3"></textarea>
+                                        </div>
+                                        <div class="questions-section">
+                                            <h4>Questions</h4>
+                                            <div id="questionsContainer">
+                                                <!-- Questions will be added here -->
+                                            </div>
+                                            <button type="button" class="btn-secondary" id="addQuestionBtn">Add Question</button>
+                                        </div>
+                                        <div class="form-actions">
+                                            <button type="submit" class="btn-primary">Create Exam</button>
+                                            <button type="button" class="btn-secondary">Save Draft</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div id="manageExamsTab" class="tab-panel">
+                                <h3>Manage Exams</h3>
+                                <div class="table-container">
+                                    <table id="instructorExamsTable" class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>Duration</th>
+                                                <th>Questions</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="instructorExamsTableBody">
+                                            <!-- Instructor's exams will be populated here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div id="resultsTab" class="tab-panel">
+                                <h3>Exam Results</h3>
+                                <p>Student results and analytics will be displayed here.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Dashboard -->
+            <div id="studentDashboard" class="dashboard hidden">
+                <div class="dashboard-header">
+                    <h2>Student Dashboard</h2>
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <h3>Available Exams</h3>
+                            <p id="availableExams">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Completed Exams</h3>
+                            <p id="completedExams">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Average Score</h3>
+                            <p id="averageScore">0%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-content">
+                    <div class="tab-container">
+                        <div class="tab-buttons">
+                            <button class="tab-btn active" data-tab="available">Available Exams</button>
+                            <button class="tab-btn" data-tab="completed">Completed Exams</button>
+                            <button class="tab-btn" data-tab="profile">Profile</button>
+                        </div>
+                        <div class="tab-content">
+                            <div id="availableTab" class="tab-panel active">
+                                <h3>Available Exams</h3>
+                                <div id="availableExamsList" class="exams-grid">
+                                    <!-- Available exams will be populated here -->
+                                </div>
+                            </div>
+                            <div id="completedTab" class="tab-panel">
+                                <h3>Completed Exams</h3>
+                                <div id="completedExamsList" class="exams-grid">
+                                    <!-- Completed exams will be populated here -->
+                                </div>
+                            </div>
+                            <div id="profileTab" class="tab-panel">
+                                <h3>Student Profile</h3>
+                                <div class="profile-info">
+                                    <p><strong>Name:</strong> <span id="studentName"></span></p>
+                                    <p><strong>Email:</strong> <span id="studentEmail"></span></p>
+                                    <p><strong>Total Exams Taken:</strong> <span id="totalExamsTaken">0</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exam Interface -->
+            <div id="examInterface" class="exam-interface hidden">
+                <div class="exam-header">
+                    <div class="exam-info">
+                        <h2 id="examTitle">Exam Title</h2>
+                        <p id="examDescription">Exam description</p>
+                    </div>
+                    <div class="exam-timer">
+                        <div class="timer-display">
+                            <span id="timerMinutes">00</span>:<span id="timerSeconds">00</span>
+                        </div>
+                        <div class="timer-label">Time Remaining</div>
+                    </div>
+                </div>
+                <div class="exam-content">
+                    <div class="question-container">
+                        <div class="question-header">
+                            <span id="questionNumber">Question 1</span> of <span id="totalQuestions">10</span>
+                        </div>
+                        <div class="question-text" id="questionText">
+                            Question text will appear here
+                        </div>
+                        <div class="question-options" id="questionOptions">
+                            <!-- Options will be populated here -->
+                        </div>
+                    </div>
+                    <div class="question-navigation">
+                        <button id="prevQuestion" class="btn-secondary">Previous</button>
+                        <div class="question-indicators" id="questionIndicators">
+                            <!-- Question indicators will be populated here -->
+                        </div>
+                        <button id="nextQuestion" class="btn-primary">Next</button>
+                    </div>
+                    <div class="exam-actions">
+                        <button id="submitExam" class="btn-danger">Submit Exam</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="modalOverlay" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Modal Title</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Modal content will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Warning Modal -->
+    <div id="securityModal" class="modal-overlay hidden">
+        <div class="modal security-modal">
+            <div class="modal-header">
+                <h3>⚠️ Security Warning</h3>
+            </div>
+            <div class="modal-body">
+                <p>You have attempted to leave the exam page. This action is logged and may result in exam termination.</p>
+                <p><strong>Please return to the exam immediately.</strong></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" id="returnToExam">Return to Exam</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/exam.js"></script>
+    <script src="js/security.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html> 
